@@ -1,0 +1,11 @@
+<html>
+  <head>
+    <title>Verify your email address</title>
+  </head>
+  <body>
+    <h1>Hey, {{ user.first_name }}!</h1>
+        <h2> Click the link to verify your email:
+        <a href="http://127.0.0.1:8000/api/VerifyEmail/{{ code }}">Verify your account !</a>
+        </h2>
+  </body>
+</html>

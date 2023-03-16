@@ -9,6 +9,11 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser, IsAuthenticatedOrReadOnly
 from .permissions import *
+from . import email_sender
+import uuid
+from django.shortcuts import get_object_or_404
+
+
 
 # Create your views here.
 
@@ -19,14 +24,14 @@ class CustomAuthToken(ObtainAuthToken):
         if serializer.is_valid():
             user = serializer.validated_data['user']
             token, created = Token.objects.get_or_create(user=user)
-            is_doctor = users.objects.get(user=user).is_doctor
-
-            return Response({
-                'token': token.key,
-                'user_id': user.pk,
-                'email': user.email,
-                'is_doctor': is_doctor
-            })
+            try :
+                is_doctor = users.objects.get(user=user).is_doctor
+            except:
+                is_doctor = False
+            phone = users.objects.get(user=user).phone
+            data = {"userdata": {"user_id": user.pk, "first_name":user.first_name, "last_name": user.last_name,
+                                 "email": user.email, "phone": phone, "is_doctor":is_doctor, "token": token.key}}
+            return Response(data, status=status.HTTP_200_OK)
         else:
             return Response({"Response": "username or password was incorrect"}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -69,11 +74,38 @@ class UserViewSet(viewsets.ModelViewSet):
 
                 nuser.save()
                 user.save()
-                return Response({"Token": token}, status=status.HTTP_201_CREATED)
 
+                try:
+                    # Generate a unique code and save it in the database
+                    code = uuid.uuid4().hex
+                    EMAIL_VERIFICATION.objects.create(email=email, code=code)
+                    # Send an email to the user's email address containing the code
+                    email_sender.send_verification_mail(user, code)
+                except Exception as e:
+                    print("ERRRRRRORRRRRRRRR", e)
+
+                profile_pic = request.build_absolute_uri(nuser.profile_pic.url)
+                data = {"user_id": user.pk, "first_name":first_name, "last_name": last_name,
+                                        "email": email, "profile_pic":profile_pic, "phone": phone, }
+                return Response({"token": token, "userdata": data}, status=status.HTTP_201_CREATED)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, *args, **kwargs):
         kwargs['partial'] = True
         return super().update(request, *args, **kwargs)
+
+class VerifyEmail_viewSet(viewsets.ModelViewSet):
+    queryset = EMAIL_VERIFICATION.objects.all()
+    serializer_class = EmailVerificationSerializer
+    permission_classes = [RetrieveOnly]
+    def retrieve(self, request, pk=None):
+        email_verification = get_object_or_404(self.queryset, code=pk)
+
+        # # Check if the user is already verified
+        if email_verification.verified:
+            return Response({'detail': 'Email already verified'}, status=status.HTTP_302_FOUND)
+
+        email_verification.verified = True
+        email_verification.save()
+        return Response({"detail":"Email Successfully verified "}, status=status.HTTP_200_OK)

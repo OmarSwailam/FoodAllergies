@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "foodAllergies_App",
     'rest_framework',
+    'django_rest_passwordreset',
     'rest_framework.authtoken',
     'django_filters',
     'corsheaders',
@@ -62,7 +63,13 @@ REST_FRAMEWORK = {
 
 }
 
-
+DJANGO_REST_PASSWORDRESET_TOKEN_CONFIG = {
+    "CLASS": "django_rest_passwordreset.tokens.RandomNumberTokenGenerator",
+    "OPTIONS": {
+        "min_number": 101010,
+        "max_number": 999999
+    }
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -153,3 +160,14 @@ AUTHENTICATION_BACKENDS = ['foodAllergies_App.backends.Email_Backend']
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.office365.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'israaessmat172@outlook.com'
+EMAIL_HOST_PASSWORD = 'israa123?!@'
+DEFAULT_FROM_EMAIL = 'israaessmat172@outlook.com'
+

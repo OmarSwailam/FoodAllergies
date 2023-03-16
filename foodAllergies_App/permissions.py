@@ -27,3 +27,17 @@ class UserPermission(permissions.BasePermission):
             return bool(request.user.is_superuser)
         else:
             return False
+
+class RetrieveOnly(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if view.action == 'retrieve':
+            return True
+        else:
+            return False
+
+    def has_object_permission(self, request, view, obj):
+
+        if view.action =='retrieve':
+            return True
+        else:
+            return False

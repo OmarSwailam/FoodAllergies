@@ -5,7 +5,8 @@ from django.dispatch import receiver
 from django.utils import timezone
 from django.conf import settings
 from rest_framework.authtoken.models import Token
-
+from django_rest_passwordreset.signals import reset_password_token_created
+from django.core.mail import send_mail
 # Create your models here.
 
 class users(models.Model):
@@ -15,6 +16,13 @@ class users(models.Model):
     is_doctor = models.BooleanField(default=False)
     def __str__(self):
         return self.user.username
+class EMAIL_VERIFICATION(models.Model):
+    email = models.EmailField()
+    code = models.CharField(max_length=32, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    verified = models.BooleanField(default=False)
+    def __str__(self):
+        return self.email
 
 class Allergy(models.Model):
     id = models.AutoField(primary_key=True)
@@ -56,3 +64,20 @@ class FoodAllergy(models.Model):
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
+
+@receiver(reset_password_token_created)
+def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
+
+    email_plaintext_message = f" Your Verification code={reset_password_token.key}"
+    title = "Food Allergies"
+
+    send_mail(
+        # title:
+        f"Password Reset for {title}",
+        # message:
+        email_plaintext_message,
+        # from:
+        "israaessmat172@outlook.com",
+        # to:
+        [reset_password_token.user.email]
+    )
