@@ -94,6 +94,24 @@ class UserViewSet(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         kwargs['partial'] = True
         return super().update(request, *args, **kwargs)
+    
+
+class FoodViewSet(viewsets.ModelViewSet):
+    queryset = Food.objects.all()
+    serializer_class = FoodSerializer
+
+class AllergyViewSet(viewsets.ModelViewSet):
+    queryset = Allergy.objects.all()
+    serializer_class = AllergySerializer
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+class FoodAllegryViewSet(viewsets.ModelViewSet):
+    queryset = FoodAllergy.objects.all()
+    serializer_class = FoodAllergySerializer
+
 
 class VerifyEmail_viewSet(viewsets.ModelViewSet):
     queryset = EMAIL_VERIFICATION.objects.all()

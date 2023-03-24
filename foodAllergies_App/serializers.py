@@ -21,6 +21,26 @@ class usersSerializer(serializers.ModelSerializer):
         return instance.user.first_name
     def get_last_name(self, instance):
         return instance.user.last_name
+    
+class FoodSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Food
+        fields = '__all__'
+
+class AllergySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Allergy
+        fields = '__all__'
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'
+
+class FoodAllergySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FoodAllergy
+        fields = '__all__'
 
 
 class EmailVerificationSerializer(serializers.ModelSerializer):
