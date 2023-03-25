@@ -38,27 +38,37 @@ class Allergy(models.Model):
     def __str__(self):
         return f"{self.arabicName} - {self.englishName}"
 
-class Category(models.Model):
-    id = models.AutoField(primary_key=True)
-    arabicName = models.CharField(max_length=50)
-    englishName = models.CharField(max_length=50)
-    def __str__(self):
-        return f"{self.arabicName} - {self.englishName}"
 
 class Food(models.Model):
     id = models.AutoField(primary_key=True)
     arabicName = models.TextField(max_length=500)
     englishName = models.TextField(max_length=500)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     def __str__(self):
         return f"{self.arabicName} - {self.englishName}"
+    
 
-class FoodAllergy(models.Model):
+class Category(models.Model):
     id = models.AutoField(primary_key=True)
-    food = models.ForeignKey(Food, on_delete=models.CASCADE)
-    allergy = models.ForeignKey(Allergy, on_delete=models.CASCADE)
+    arabicName = models.CharField(max_length=50)
+    englishName = models.CharField(max_length=50)
+    allergy = models.ForeignKey(Allergy, on_delete=models.CASCADE, default='blank')
     def __str__(self):
-        return f"{self.food} - {self.allergy}"
+        return f"{self.arabicName} - {self.englishName}"  
+
+class Foods(models.Model):
+    foods = models.ForeignKey(Food, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+
+
+
+
+# class FoodAllergy(models.Model):
+#     id = models.AutoField(primary_key=True)
+#     food = models.ForeignKey(Food, on_delete=models.CASCADE)
+#     allergy = models.ForeignKey(Allergy, on_delete=models.CASCADE)
+#     def __str__(self):
+#         return f"{self.food} - {self.allergy}"
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):

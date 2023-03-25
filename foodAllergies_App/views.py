@@ -108,9 +108,9 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
-class FoodAllegryViewSet(viewsets.ModelViewSet):
-    queryset = FoodAllergy.objects.all()
-    serializer_class = FoodAllergySerializer
+# class FoodAllegryViewSet(viewsets.ModelViewSet):
+#     queryset = FoodAllergy.objects.all()
+#     serializer_class = FoodAllergySerializer
 
 
 class VerifyEmail_viewSet(viewsets.ModelViewSet):
