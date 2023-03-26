@@ -37,10 +37,10 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = '__all__'
 
-# class FoodAllergySerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = FoodAllergy
-#         fields = '__all__'
+class FoodAllergySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FoodAllergy
+        fields = '__all__'
 
 
 class EmailVerificationSerializer(serializers.ModelSerializer):

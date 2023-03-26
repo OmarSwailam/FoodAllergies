@@ -13,7 +13,7 @@ router.register('VerifyEmail', VerifyEmail_viewSet, basename='VerifyEmail')
 router.register('food', FoodViewSet, basename='Food')
 router.register('allergy', AllergyViewSet, basename='Allergy')
 router.register('category', CategoryViewSet, basename='Category')
-# router.register('foodallegry', FoodAllegryViewSet, basename='FoodAllergy')
+router.register('foodallegry', FoodAllegryViewSet, basename='FoodAllergy')
 
 router.register('passwordreset_validate_token',ResetPasswordValidateTokenViewSet,basename='reset-password-validate')
 router.register('passwordreset_confirm',ResetPasswordConfirmViewSet,basename='reset-password-confirm')

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets, status, filters
 from .models import *
+from .models import FoodAllergy
 from .serializers import *
 from rest_framework import permissions
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -108,9 +109,21 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
-# class FoodAllegryViewSet(viewsets.ModelViewSet):
-#     queryset = FoodAllergy.objects.all()
-#     serializer_class = FoodAllergySerializer
+class FoodAllegryViewSet(viewsets.ModelViewSet):
+    queryset = FoodAllergy.objects.all()
+    serializer_class = FoodAllergySerializer
+    permission_classes = [FoodAllergyPermission]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['food__arabicName', 'food__englishName', 'category__arabicName', 'category__englishName',
+                     'allergy__arabicDescription', 'allergy__englishDescription', 'allergy__arabicName','allergy__englishName',
+                     'allergy__arabicSymptoms', 'allergy__englishSymptoms', 'allergy__arabicPrevention', 'allergy__englishPrevention'
+                     ]
+    filterset_fields = ['food__arabicName', 'food__englishName', 'category__arabicName', 'category__englishName', 'allergy__arabicName','allergy__englishName',
+                     'allergy__arabicSymptoms', 'allergy__englishSymptoms', 'allergy__arabicPrevention', 'allergy__englishPrevention'
+                     ]
+
+
+
 
 
 class VerifyEmail_viewSet(viewsets.ModelViewSet):
