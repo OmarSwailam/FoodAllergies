@@ -106,7 +106,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "Food_Allergies_Ptoject.wsgi.application"
 
-CORS_ALLOWED_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 # Database
