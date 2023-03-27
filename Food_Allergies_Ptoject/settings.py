@@ -24,10 +24,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY", "37g2hfuerhfubjh")
+
+import environ
+
+env = environ.Env()
+
+environ.Env.read_env()
+
+
+
+SECRET_KEY = "django-insecure-+zyt7e907na8*$8p*t3_q^4*-6wmijqgaqatoixsc_89!n(qm9"
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = DEBUG = 'RENDER' not in os.environ
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -113,7 +123,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    "default": dj_database_url.parse('postgres://foodallergiesdatabase_user:zav6bt34BcwhvNGThWiceNn8VVBiH2NH@dpg-cggd6re4daddcg3j756g-a.ohio-postgres.render.com/foodallergiesdatabase'),
+    "default": dj_database_url.parse(env('DATABASE_URL')),
 }
 
 # ENGINE="django.db.backends.postgresql"
