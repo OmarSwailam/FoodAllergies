@@ -113,13 +113,10 @@ CORS_ALLOW_ALL_ORIGINS = True
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        conn_max_age=600,
-        conn_health_checks=True,
-    ),
+    "default": dj_database_url.parse('postgres://foodallergiesdatabase_user:zav6bt34BcwhvNGThWiceNn8VVBiH2NH@dpg-cggd6re4daddcg3j756g-a.ohio-postgres.render.com/foodallergiesdatabase'),
 }
 
-ENGINE="django.db.backends.postgresql"
+# ENGINE="django.db.backends.postgresql"
 
 # DATABASES = {
 #     "default": {
