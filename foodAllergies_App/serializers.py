@@ -49,8 +49,7 @@ class FoodAllergySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_food(self, obj):
-        obj.food
-        food = Food.objects.get()
+        food = Food.objects.food()
         dataofFood = {
              'arabicName' : food.arabicName,
              'englishName' : food.englishName
