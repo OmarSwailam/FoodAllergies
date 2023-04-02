@@ -2,6 +2,8 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import *
 from django.core import validators
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -37,13 +39,32 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = '__all__'
 
+    
 class FoodAllergySerializer(serializers.ModelSerializer):
+
+    food = serializers.SerializerMethodField()
+
     class Meta:
         model = FoodAllergy
         fields = '__all__'
 
+    def get_food(self, obj):
+        obj.food
+        food = Food.objects.get()
+        dataofFood = {
+             'arabicName' : food.arabicName,
+             'englishName' : food.englishName
+         }
+        return dataofFood
 
+        
 class EmailVerificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = EMAIL_VERIFICATION
         fields = "__all__"
+
+
+
+# class CustomField(FoodAllergy):
+#     def to_native(self, obj):
+#         return obj.self.all()
