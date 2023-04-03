@@ -32,16 +32,15 @@ env = environ.Env()
 environ.Env.read_env()
 
 
-
 SECRET_KEY = "django-insecure-+zyt7e907na8*$8p*t3_q^4*-6wmijqgaqatoixsc_89!n(qm9"
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
@@ -54,38 +53,34 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "debug_toolbar",
     "foodAllergies_App",
-    'rest_framework',
-    'django_rest_passwordreset',
-    'rest_framework.authtoken',
-    'django_filters',
-    'corsheaders',
+    "rest_framework",
+    "django_rest_passwordreset",
+    "rest_framework.authtoken",
+    "django_filters",
+    "corsheaders",
 ]
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
     ],
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'] ,
-
-
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination', 'PAGE_SIZE': 100 ,
-
-
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 100,
 }
 
 DJANGO_REST_PASSWORDRESET_TOKEN_CONFIG = {
     "CLASS": "django_rest_passwordreset.tokens.RandomNumberTokenGenerator",
-    "OPTIONS": {
-        "min_number": 101010,
-        "max_number": 999999
-    }
+    "OPTIONS": {"min_number": 101010, "max_number": 999999},
 }
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
@@ -123,7 +118,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    "default": dj_database_url.parse(env('DATABASE_URL')),
+    "default": dj_database_url.parse(env("DATABASE_URL")),
 }
 
 # ENGINE="django.db.backends.postgresql"
@@ -134,7 +129,6 @@ DATABASES = {
 #         "NAME": BASE_DIR / "db.sqlite3",
 #     }
 # }
-
 
 
 # Password validation
@@ -170,14 +164,14 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_URL = "static/"
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
 
 
-AUTHENTICATION_BACKENDS = ['foodAllergies_App.backends.Email_Backend']
+AUTHENTICATION_BACKENDS = ["foodAllergies_App.backends.Email_Backend"]
 
 
 # Default primary key field type
@@ -187,11 +181,16 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.office365.com'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.office365.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'israaessmat172@outlook.com'
-EMAIL_HOST_PASSWORD = 'israa123?!@'
-DEFAULT_FROM_EMAIL = 'israaessmat172@outlook.com'
+EMAIL_HOST_USER = "israaessmat172@outlook.com"
+EMAIL_HOST_PASSWORD = "israa123?!@"
+DEFAULT_FROM_EMAIL = "israaessmat172@outlook.com"
 
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]
