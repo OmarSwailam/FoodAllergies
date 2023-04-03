@@ -41,20 +41,51 @@ class CategorySerializer(serializers.ModelSerializer):
 
     
 class FoodAllergySerializer(serializers.ModelSerializer):
-
     food = serializers.SerializerMethodField()
+    category = serializers.SerializerMethodField()
+    allegry = serializers.SerializerMethodField()
 
     class Meta:
         model = FoodAllergy
         fields = '__all__'
 
     def get_food(self, obj):
-        food = Food.objects.food()
+        food = obj.food
         dataofFood = {
              'arabicName' : food.arabicName,
              'englishName' : food.englishName
          }
         return dataofFood
+    
+    def get_category(self, obj):
+        category = obj.category
+        dataofcategory = {
+             'arabicName' : category.arabicName,
+             'englishName' : category.englishName
+         }
+        return dataofcategory
+    
+    def get_allergy(self, obj):
+        allegry = obj.allegry
+        dataofallegry = {
+             'allergy_pic' : allegry.allergy_pic,
+             'arabicDescription' : allegry.arabicDescription,
+             'englishDescription' : allegry.englishDescription,
+             'arabicName' : allegry.arabicName,
+             'englishName' : allegry.englishName,
+             'arabicSymptoms' : allegry.arabicSymptoms,
+             'englishSymptoms' : allegry.englishSymptoms,
+             'arabicPrevention' : allegry.arabicPrevention,
+             'englishPrevention' : allegry.englishPrevention,
+         }
+        return dataofallegry
+    
+
+
+
+
+
+
 
         
 class EmailVerificationSerializer(serializers.ModelSerializer):
